@@ -12,10 +12,11 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 // actions
-import { loginUser, socialLogin, resetLoginFlag } from "../../slices/thunks";
+import { loginUser } from "../../slices/thunks";
 
 import logoLight from "../../assets/images/logo-light.png";
 import { createSelector } from "reselect";
+import { WEB_TITLE } from "Components/constants/general";
 //import images
 
 const Login = (props: any) => {
@@ -64,25 +65,7 @@ const Login = (props: any) => {
     },
   });
 
-  // const signIn = (type: any) => {
-  //   dispatch(socialLogin(type, props.router.navigate));
-  // };
-
-  //for facebook and google authentication
-  // const socialResponse = (type: any) => {
-  //   signIn(type);
-  // };
-
-  // useEffect(() => {
-  //   if (errorMsg) {
-  //     setTimeout(() => {
-  //       dispatch(resetLoginFlag());
-  //       setLoader(false);
-  //     }, 3000);
-  //   }
-  // }, [dispatch, errorMsg]);
-
-  document.title = "Basic SignIn | Velzon - React Admin & Dashboard Template";
+  document.title = `Login | ${WEB_TITLE}`;
   return (
     <React.Fragment>
       <ParticlesAuth>
@@ -178,7 +161,7 @@ const Login = (props: any) => {
                                 Loading...{" "}
                               </Spinner>
                             )}
-                            Sign In
+                            Login
                           </Button>
                         </div>
                       </Form>
