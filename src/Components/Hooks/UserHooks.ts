@@ -11,6 +11,12 @@ const useProfile = () => {
     userProfileSession ? userProfileSession : null
   );
 
+  const verifyUser = localStorage.getItem("verify");
+  let verify;
+  if (verifyUser !== null) {
+    verify = JSON.parse(verifyUser);
+  }
+
   useEffect(() => {
     const userProfileSession = getLoggedinUser();
     var token =
@@ -18,11 +24,12 @@ const useProfile = () => {
       userProfileSession["token"];
     setUserProfile(userProfileSession ? userProfileSession : null);
     setLoading(token ? false : true);
+    // verify = userProfileSession && userProfileSession["verify"];
     
   }, []);
 
 
-  return { userProfile, loading,token };
+  return { userProfile, loading, token, verify };
 };
 
 export { useProfile };

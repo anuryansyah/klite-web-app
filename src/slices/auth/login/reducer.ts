@@ -13,8 +13,8 @@ const loginSlice  = createSlice({
   initialState,
   reducers: {
     apiError(state, action) {
-      state.error = action.payload.data;
-      state.loading = true;
+      state.error = action.payload;
+      state.loading = false;
       state.isUserLogout = false;
       state.errorMsg = true;
     },
@@ -30,7 +30,10 @@ const loginSlice  = createSlice({
       state.error = "";
       state.loading = false;
       state.errorMsg = false;
-    }
+    },
+    setLoading(state, action) {
+      state.loading = action.payload;
+    },
   },
 });
 
@@ -38,7 +41,8 @@ export const {
   apiError,
   loginSuccess,
   logoutUserSuccess,
-  reset_login_flag
+  reset_login_flag,
+  setLoading
 } = loginSlice.actions
 
 export default loginSlice.reducer;

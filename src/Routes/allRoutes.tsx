@@ -9,6 +9,7 @@ import Login from "../pages/Authentication/Login";
 import ForgetPasswordPage from "../pages/Authentication/ForgetPassword";
 import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
+import Verify from "../pages/Authentication/Verify";
 
 // // User Profile
 import UserProfile from "../pages/Authentication/user-profile";
@@ -19,7 +20,9 @@ const authProtectedRoutes = [
 
   //User Profile
   { path: "/profile", component: <UserProfile /> },
-
+  
+  // //Verify User
+  // { path: "/verify", component: <Verify /> },
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name
   {
@@ -30,12 +33,17 @@ const authProtectedRoutes = [
   { path: "*", component: <Navigate to="/dashboard" /> },
 ];
 
+const authVerifyRoutes = [
+  { path: "/verify", component: <Verify /> },
+]
+
 const publicRoutes = [
   // Authentication Page
   { path: "/logout", component: <Logout /> },
   { path: "/login", component: <Login /> },
   { path: "/forgot-password", component: <ForgetPasswordPage /> },
   { path: "/register", component: <Register /> },
+  // { path: "/verify", component: <Verify /> },
 ];
 
-export { authProtectedRoutes, publicRoutes };
+export { authProtectedRoutes, publicRoutes, authVerifyRoutes };

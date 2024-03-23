@@ -1,4 +1,5 @@
 //Include Both Helper File with needed methods
+import { postRegister } from "helpers/api/auth";
 import {
   postFakeRegister,
   postJwtRegister,
@@ -21,13 +22,15 @@ export const registerUser = (user : any) => async (dispatch : any) => {
       response = postJwtRegister('/post-jwt-register', user);
       // yield put(registerUserSuccessful(response));
     } else if (process.env.REACT_APP_API_URL) {
-      response = postFakeRegister(user);
+      response = postRegister({
+        username: user.username,
+        fullname: user.fullname,
+        password: user.password,
+      });
       const data : any = await response;
 
-      if (data.message === "success") {
+      if (data) {
         dispatch(registerUserSuccessful(data));
-      } else {
-        dispatch(registerUserFailed(data));
       }
     }
   } catch (error : any) {

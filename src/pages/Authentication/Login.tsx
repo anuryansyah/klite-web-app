@@ -12,7 +12,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 // actions
-import { loginUser } from "../../slices/thunks";
+import { loginUser, resetLoginFlag } from "../../slices/thunks";
 
 import logoLight from "../../assets/images/logo-light.png";
 import { createSelector } from "reselect";
@@ -30,7 +30,7 @@ const Login = (props: any) => {
     errorMsg: state.Login.errorMsg,
   }));
   // Inside your component
-  const { user, error, errorMsg } = useSelector(loginpageData);
+  const { user, error, errorMsg, loading } = useSelector(loginpageData);
 
   const [userLogin, setUserLogin] = useState<any>([]);
   const [passwordShow, setPasswordShow] = useState<boolean>(false);
@@ -52,8 +52,8 @@ const Login = (props: any) => {
     enableReinitialize: true,
 
     initialValues: {
-      email: userLogin.email || 'yansyah.nur1@gmail.com' || "",
-      password: userLogin.password || '123456' || "",
+      email: userLogin.email || "",
+      password: userLogin.password || "",
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
@@ -146,16 +146,16 @@ const Login = (props: any) => {
                           </div>
                         </div>
 
-                        <div className="form-check">
+                        {/* <div className="form-check">
                           <Input className="form-check-input" type="checkbox" value="" id="auth-remember-check" />
                           <Label className="form-check-label" htmlFor="auth-remember-check">
                             Remember me
                           </Label>
-                        </div>
+                        </div> */}
 
                         <div className="mt-4">
-                          <Button color="success" disabled={loader && true} className="btn btn-success w-100" type="submit">
-                            {loader && (
+                          <Button color="success" disabled={loading && true} className="btn btn-success w-100" type="submit">
+                            {loading && (
                               <Spinner size="sm" className="me-2">
                                 {" "}
                                 Loading...{" "}

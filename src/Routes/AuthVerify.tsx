@@ -7,9 +7,8 @@ import { isExpired } from "react-jwt";
 import { useProfile } from "../Components/Hooks/UserHooks";
 
 import { logoutUser } from "../slices/auth/login/thunk";
-import Verify from "pages/Authentication/Verify";
 
-const AuthProtected = (props: any) => {
+const AuthVerify = (props: any) => {
   const dispatch: any = useDispatch();
   const { userProfile, loading, token, verify } = useProfile();
 
@@ -23,8 +22,8 @@ const AuthProtected = (props: any) => {
     }
   }, [token, userProfile, loading, dispatch]);
 
-  if (!verify) {
-    return <Navigate to={{ pathname: "/verify" }} />;
+  if (verify) {
+    return <Navigate to={{ pathname: "/dashboard" }} />;
   }
 
   /*
@@ -38,4 +37,4 @@ const AuthProtected = (props: any) => {
   return <>{props.children}</>;
 };
 
-export default AuthProtected;
+export default AuthVerify;

@@ -28,7 +28,7 @@ const config: Config = {
     APP_ID: "",
   },
   api: {
-    API_URL: "https://starter-services.cyclic.app",
+    API_URL: process.env.REACT_APP_API_URL ?? "https://starter-services.cyclic.app",
   },
 };
 

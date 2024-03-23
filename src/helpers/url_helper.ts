@@ -1,6 +1,10 @@
 //REGISTER
 export const POST_FAKE_REGISTER = "/auth/signup";
-export const POST_REGISTER = "/auth/signup";
+export const POST_REGISTER = "/auth/register";
+
+// VERIVY
+export const POST_VERIVY_EMAIL = "/auth/account-verification";
+export const POST_VERIVY_CONFIRMATION = "/auth/account-verification/verify";
 
 //LOGIN
 export const POST_FAKE_LOGIN = "/auth/signin";
