@@ -25,6 +25,7 @@ export const registerUser = (user : any) => async (dispatch : any) => {
       response = postRegister({
         username: user.username,
         fullname: user.fullname,
+        phoneNumber: user.phoneNumber,
         password: user.password,
       });
       const data : any = await response;
@@ -34,7 +35,7 @@ export const registerUser = (user : any) => async (dispatch : any) => {
       }
     }
   } catch (error : any) {
-    dispatch(registerUserFailed(error));
+    dispatch(registerUserFailed(error.details[0].message));
   }
 };
 

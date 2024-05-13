@@ -23,9 +23,10 @@ import { createSelector } from "reselect";
 import { WEB_TITLE } from "Components/constants/general";
 
 const Register = () => {
-  const [loader, setLoader] = useState<boolean>(false);
   const history = useNavigate();
   const dispatch: any = useDispatch();
+
+  const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -34,12 +35,14 @@ const Register = () => {
     initialValues: {
       username: "",
       fullname: "",
+      phoneNumber: "",
       password: "",
       confirm_password: "",
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Please Enter Your Email"),
       fullname: Yup.string().required("Please Enter Your Full Name"),
+      phoneNumber: Yup.string().required("Please Enter Your Phone Number").matches(phoneRegExp, 'Phone number is not valid').max(13),
       password: Yup.string().required("Please Enter Your Password"),
       confirm_password: Yup.string()
         .oneOf([Yup.ref("password"), ""], "Passwords must match")
@@ -47,7 +50,6 @@ const Register = () => {
     }),
     onSubmit: (values) => {
       dispatch(registerUser(values));
-      setLoader(true);
     },
   });
 
@@ -56,6 +58,7 @@ const Register = () => {
     success: state.Account.success,
     error: state.Account.error,
     loading: state.Login.loading,
+    registrationError: state.Login.registrationError,
   }));
   // Inside your component
   const { error, success, loading } = useSelector(registerdatatype);
@@ -159,6 +162,27 @@ const Register = () => {
                           {validation.touched.fullname && validation.errors.fullname ? (
                             <FormFeedback type="invalid">
                               <div>{validation.errors.fullname}</div>
+                            </FormFeedback>
+                          ) : null}
+                        </div>
+                        <div className="mb-3">
+                          <Label htmlFor="phoneNumber" className="form-label">
+                            Phone Number <span className="text-danger">*</span>
+                          </Label>
+                          <Input 
+                            name="phoneNumber"
+                            type="text" 
+                            className="form-control"
+                            pattern="[0-9]*"
+                            placeholder="Enter Your Phone Number" 
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            value={validation.values.phoneNumber || ""}
+                            invalid={validation.touched.phoneNumber && validation.errors.phoneNumber ? true : false}
+                          />
+                          {validation.touched.phoneNumber && validation.errors.phoneNumber ? (
+                            <FormFeedback type="invalid">
+                              <div>{validation.errors.phoneNumber}</div>
                             </FormFeedback>
                           ) : null}
                         </div>

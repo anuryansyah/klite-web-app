@@ -7,7 +7,7 @@ import { isExpired } from "react-jwt";
 import { useProfile } from "../Components/Hooks/UserHooks";
 
 import { logoutUser } from "../slices/auth/login/thunk";
-import Verify from "pages/Authentication/Verify";
+import { USER_STATUS } from "Components/constants/general";
 
 const AuthProtected = (props: any) => {
   const dispatch: any = useDispatch();
@@ -23,7 +23,7 @@ const AuthProtected = (props: any) => {
     }
   }, [token, userProfile, loading, dispatch]);
 
-  if (!verify) {
+  if (verify === USER_STATUS.NEW) {
     return <Navigate to={{ pathname: "/verify" }} />;
   }
 

@@ -1,18 +1,15 @@
 import React, { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card, CardBody, Col, Container, Row, Button, Alert } from "reactstrap";
 import ParticlesAuth from "../AuthenticationInner/ParticlesAuth";
 
 //import images
 import logoLight from "../../assets/images/logo-light.png";
-import { WEB_TITLE } from "Components/constants/general";
-import { ToastContainer, toast } from "react-toastify";
+import { USER_STATUS, WEB_TITLE } from "Components/constants/general";
 import ButtonLoading from "Components/Common/ButtonLoading";
 import { postSendConfirmation, postSendEmailVerify } from "helpers/api/auth";
 
 const Verify = () => {
-  const navigate = useNavigate();
-
   const [digits, setDigits] = useState(["", "", "", "", "", ""]);
   const [hasSend, setHasSend] = useState({
     status: false,
@@ -53,12 +50,12 @@ const Verify = () => {
   };
 
   const handleVerify = async () => {
-    const payload = { securityCode: digits.join('') };
+    const data = { securityCode: digits.join('') };
     
     setLoading(true);
     try {
-      await postSendConfirmation(payload);
-      localStorage.setItem("verify", JSON.stringify(true));
+      await postSendConfirmation(data);
+      localStorage.setItem("verify", JSON.stringify(USER_STATUS.ACTIVE));
       window.location.reload();
     } catch (err: any) {
       setError(err);

@@ -92,7 +92,8 @@ export const changeLayoutPosition = (layoutposition : any) => async (dispatch : 
  */
 export const changeTopbarTheme = (topbarTheme : any) => async (dispatch : any) => {
     try {
-        changeHTMLAttribute("data-topbar", topbarTheme);
+        changeHTMLAttribute("data-topbar", 'light');
+        // changeHTMLAttribute("data-topbar", topbarTheme);
         dispatch(changeTopbarThemeAction(topbarTheme));
 
     } catch (error) {

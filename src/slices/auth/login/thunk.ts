@@ -39,6 +39,7 @@ export const logoutUser = () => async (dispatch : any) => {
   try {
     localStorage.removeItem("authUser");
     localStorage.removeItem("verify");
+    localStorage.removeItem("profile");
     dispatch(logoutUserSuccess(true));
     
   } catch (error) {

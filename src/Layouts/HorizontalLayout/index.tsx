@@ -12,7 +12,7 @@ const HorizontalLayout = (props: any) => {
   const navData = navdata().props.children;
   let menuItems: any = [];
   let splitMenuItems: Array<any> = [];
-  let menuSplitContainer = 6;
+  let menuSplitContainer = 9;
   navData.forEach(function (value: any, key: number) {
     if (value["isHeader"]) {
       menuSplitContainer++;
@@ -116,7 +116,7 @@ const HorizontalLayout = (props: any) => {
             {!item["isHeader"] ? (
               item.subItems ? (
                 <li className="nav-item">
-                  <Link onClick={item.click} className="nav-link menu-link" to={item.link ? item.link : "/#"} data-bs-toggle="collapse">
+                  <Link onClick={item.click} className="nav-link menu-link me-4" to={item.link ? item.link : "/#"} data-bs-toggle="collapse">
                     <i className={item.icon}></i> <span data-key="t-apps">{item.label}</span>
                   </Link>
                   <Collapse className={item.id === "baseUi" && item.subItems.length > 13 ? "menu-dropdown mega-dropdown-menu" : "menu-dropdown"} isOpen={item.stateVariables} id="sidebarApps">

@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from "reactstrap";
 import { createSelector } from "reselect";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 //import images
 import avatar1 from "../../assets/images/users/avatar-1.jpg";
+import { getProfile } from "slices/thunks";
 
 const ProfileDropdown = () => {
   const profiledropdownData = createSelector(
@@ -15,25 +16,33 @@ const ProfileDropdown = () => {
   // Inside your component
   const user = useSelector(profiledropdownData);
 
-  const [userName, setUserName] = useState("Admin");
+  const dispatch: any = useDispatch();
+
+  const [profile, setProfile] = useState({
+    fullname: '',
+    role: ''
+  });
+
+  const [userName, setUserName] = useState("");
+  const authUser: any = localStorage.getItem("authUser");
 
   useEffect(() => {
-    const authUser: any = sessionStorage.getItem("authUser");
     if (authUser) {
-      const obj: any = JSON.parse(authUser);
-      setUserName(
-        process.env.REACT_APP_DEFAULTAUTH === "fake"
-          ? obj.username === undefined
-            ? user.first_name
-              ? user.first_name
-              : obj.data.first_name
-            : "Admin" || "Admin"
-          : process.env.REACT_APP_DEFAULTAUTH === "firebase"
-          ? obj.email && obj.email
-          : "Admin"
-      );
+      dispatch(getProfile());
     }
-  }, [userName, user]);
+  }, [authUser]);
+
+  useEffect(() => {
+    const profile: any = localStorage.getItem('profile');
+
+    if (profile) {
+      const profileObj: any = JSON.parse(profile);
+      // setProfile(user ?? profileObj);
+      // setUserName(user.fullname.split(' ')[0])
+      setProfile(profileObj);
+      setUserName(profileObj.fullname.split(' ')[0])
+    }
+  }, [user]);
 
   //Dropdown Toggle
   const [isProfileDropdown, setIsProfileDropdown] = useState(false);
@@ -48,7 +57,7 @@ const ProfileDropdown = () => {
             <img className="rounded-circle header-profile-user" src={avatar1} alt="Header Avatar" />
             <span className="text-start ms-xl-2">
               <span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{userName}</span>
-              <span className="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">Founder</span>
+              <span className="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">{profile.role}</span>
             </span>
           </span>
         </DropdownToggle>

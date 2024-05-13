@@ -7,6 +7,7 @@ import { isExpired } from "react-jwt";
 import { useProfile } from "../Components/Hooks/UserHooks";
 
 import { logoutUser } from "../slices/auth/login/thunk";
+import { USER_STATUS } from "Components/constants/general";
 
 const AuthVerify = (props: any) => {
   const dispatch: any = useDispatch();
@@ -22,7 +23,7 @@ const AuthVerify = (props: any) => {
     }
   }, [token, userProfile, loading, dispatch]);
 
-  if (verify) {
+  if (verify === USER_STATUS.ACTIVE) {
     return <Navigate to={{ pathname: "/dashboard" }} />;
   }
 

@@ -3,7 +3,7 @@ import { postFakeProfile, postJwtProfile } from "../../../helpers/fakebackend_he
 
 // action
 import { profileSuccess, profileError, resetProfileFlagChange } from "./reducer";
-import { getUserProfile } from "helpers/api/auth";
+import { getUserProfile } from "helpers/api/user";
 
 export const editProfile = (user: any) => async (dispatch: any) => {
   try {
@@ -37,7 +37,7 @@ export const resetProfileFlag = () => {
   }
 };
 
-export const getProfile = async (dispatch: any) => {
+export const getProfile = () => async (dispatch: any) => {
   try {
     const data = await getUserProfile();
     if (data) {
