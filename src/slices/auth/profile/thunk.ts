@@ -1,9 +1,9 @@
 //Include Both Helper File with needed methods
+import UserAPI from "helpers/api/user";
 import { postFakeProfile, postJwtProfile } from "../../../helpers/fakebackend_helper";
 
 // action
 import { profileSuccess, profileError, resetProfileFlagChange } from "./reducer";
-import { getUserProfile } from "helpers/api/user";
 
 export const editProfile = (user: any) => async (dispatch: any) => {
   try {
@@ -39,7 +39,7 @@ export const resetProfileFlag = () => {
 
 export const getProfile = () => async (dispatch: any) => {
   try {
-    const data = await getUserProfile();
+    const data = await UserAPI.getProfile();
     if (data) {
       localStorage.setItem("profile", JSON.stringify(data));
       dispatch(profileSuccess(data));

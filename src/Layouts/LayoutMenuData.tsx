@@ -1,6 +1,5 @@
-import { getMenuAccess } from "helpers/api/user";
+import UserAPI from "helpers/api/user";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const Navdata = () => {
   // const history = useNavigate();
@@ -102,7 +101,7 @@ const Navdata = () => {
 
   useEffect(() => {
     const getMenu = async () => {
-			await getMenuAccess()
+			await UserAPI.getMenuAccess()
         .then((res: any) => {
           const tempMenu: any[] = [];
 
@@ -118,6 +117,7 @@ const Navdata = () => {
                   e.preventDefault();
               }
             })
+            return ''
           })
           
           setMenuItems(tempMenu);

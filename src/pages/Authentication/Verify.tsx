@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Card, CardBody, Col, Container, Row, Button, Alert } from "reactstrap";
+import { Link } from "react-router-dom";
+import { Card, CardBody, Col, Container, Row, Alert } from "reactstrap";
 import ParticlesAuth from "../AuthenticationInner/ParticlesAuth";
 
 //import images
@@ -75,10 +75,9 @@ const Verify = () => {
                   <div className="text-center mt-sm-5 mb-4 text-white-50">
                     <div>
                       <Link to="/dashboard" className="d-inline-block auth-logo">
-                        <img src={logoLight} alt="" height="20" />
+                        <img src={logoLight} alt="" height="50" />
                       </Link>
                     </div>
-                    <p className="mt-3 fs-15 fw-medium">Premium Admin & Dashboard Template</p>
                   </div>
                 </Col>
               </Row>
@@ -97,7 +96,7 @@ const Verify = () => {
 
                       <div className="mt-4">
                         <div className="text-muted text-center mb-4">
-                          <h4 className="">Verify Your Email</h4>
+                          <h4 className="">Verifikasi Email Anda</h4>
                           {hasSend.status && (
                             <Alert color="success" className="mt-3">
                               {hasSend.message}
@@ -108,12 +107,12 @@ const Verify = () => {
                               {error}
                             </Alert>
                           )}
-                          {hasSend.status && <p>Please enter the 6 digit code sent to your email</p>}
+                          {hasSend.status && <p>Tolong masukan 6 digit code yang telah dikirimkan ke email Anda.</p>}
                         </div>
 
                         {!hasSend.status ? (
                           <div className="mt-3">
-                            <ButtonLoading title="Send Verification Code" color="success" loading={loading} className="w-100" onClick={handleSendEmail} />
+                            <ButtonLoading title="Kirim Kode Verifikasi" color="success" loading={loading} className="w-100" onClick={handleSendEmail} />
                           </div>
                         ) : (
                           <div>
@@ -221,7 +220,7 @@ const Verify = () => {
                               </Col>
                             </Row>
                             <div className="mt-3">
-                              <ButtonLoading title="Confirm" color="success" loading={loading} className="w-100" onClick={handleVerify} />
+                              <ButtonLoading title="Konfirmasi" color="success" loading={loading} className="w-100" onClick={handleVerify} />
                             </div>
                           </div>
                         )}

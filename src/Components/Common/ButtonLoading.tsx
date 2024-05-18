@@ -1,6 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Button, Col, Row, Spinner } from "reactstrap";
+import { Button, Spinner } from "reactstrap";
 
 interface ButtonLoadingProps {
   title: string;
@@ -15,7 +14,7 @@ const ButtonLoading = ({ title, loading, className, onClick, color }: ButtonLoad
     <React.Fragment>
       <Button color={color} className={className} type="button" disabled={loading && true} onClick={onClick}>
         {loading && (
-          <Spinner size="sm" className="me-2" />
+          <Spinner size="sm" />
         )}
         {!loading && title}
       </Button>

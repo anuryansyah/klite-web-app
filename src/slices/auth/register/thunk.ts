@@ -1,7 +1,6 @@
 //Include Both Helper File with needed methods
 import { postRegister } from "helpers/api/auth";
 import {
-  postFakeRegister,
   postJwtRegister,
 } from "../../../helpers/fakebackend_helper";
 

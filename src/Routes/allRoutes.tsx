@@ -14,12 +14,18 @@ import Verify from "../pages/Authentication/Verify";
 // // User Profile
 import UserProfile from "../pages/Authentication/user-profile";
 
+// User
+import UserPage from "../pages/User"
+
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
 
   //User Profile
   { path: "/profile", component: <UserProfile /> },
+  
+  // User
+  { path: "/user", component: <UserPage /> },
   
   // //Verify User
   // { path: "/verify", component: <Verify /> },

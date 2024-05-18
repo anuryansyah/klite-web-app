@@ -21,3 +21,5 @@ export const POST_EDIT_JWT_PROFILE = "/post-jwt-profile";
 export const POST_EDIT_PROFILE = "/user";
 export const GET_PROFILE = "user/profile";
 export const GET_MENU_ACCESS = "user/menu-access";
+export const PUT_EDIT_PROFILE = "user/update";
+export const PUT_CHANGE_PASSWORD = "user/change-password";

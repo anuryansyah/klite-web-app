@@ -1,34 +1,34 @@
-import React, { useEffect, useState } from "react";
-import { Offcanvas, OffcanvasHeader, OffcanvasBody, Collapse } from "reactstrap";
+import React, { useEffect } from "react";
+// import { Offcanvas, OffcanvasHeader, OffcanvasBody, Collapse } from "reactstrap";
 import withRouter from "./withRouter";
 
 //redux
-import {
-  changeSidebarTheme,
-} from "../../slices/thunks";
+// import {
+//   changeSidebarTheme,
+// } from "../../slices/thunks";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 const RightSidebar = (props: any) => {
-  const dispatch: any = useDispatch();
+  // const dispatch: any = useDispatch();
 
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false);
 
-  function tog_show() {
-    setShow(!show);
-    dispatch(changeSidebarTheme("gradient"));
-  }
+  // function tog_show() {
+  //   setShow(!show);
+  //   dispatch(changeSidebarTheme("gradient"));
+  // }
 
-  useEffect(() => {
-    const sidebarColorDark = document.getElementById("sidebar-color-dark") as HTMLInputElement;
-    const sidebarColorLight = document.getElementById("sidebar-color-light") as HTMLInputElement;
+  // useEffect(() => {
+  //   const sidebarColorDark = document.getElementById("sidebar-color-dark") as HTMLInputElement;
+  //   const sidebarColorLight = document.getElementById("sidebar-color-light") as HTMLInputElement;
 
-    if (show && sidebarColorDark && sidebarColorLight) {
-      sidebarColorDark.checked = false;
-      sidebarColorLight.checked = false;
-    }
-  }, [show]);
+  //   if (show && sidebarColorDark && sidebarColorLight) {
+  //     sidebarColorDark.checked = false;
+  //     sidebarColorLight.checked = false;
+  //   }
+  // }, [show]);
 
   const selectLayoutState = (state: any) => state.Layout;
   const selectLayoutProperties = createSelector(selectLayoutState, (layout) => ({

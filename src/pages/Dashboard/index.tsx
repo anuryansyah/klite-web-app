@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Col, Container, Row } from "reactstrap";
 import Flatpickr from "react-flatpickr";
 import { WEB_TITLE } from "Components/constants/general";

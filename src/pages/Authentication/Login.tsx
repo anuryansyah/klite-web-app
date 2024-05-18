@@ -12,7 +12,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 // actions
-import { loginUser, resetLoginFlag } from "../../slices/thunks";
+import { loginUser } from "../../slices/thunks";
 
 import logoLight from "../../assets/images/logo-light.png";
 import { createSelector } from "reselect";
@@ -27,14 +27,12 @@ const Login = (props: any) => {
     user: state.Account.user,
     error: state.Login.error,
     loading: state.Login.loading,
-    errorMsg: state.Login.errorMsg,
   }));
   // Inside your component
-  const { user, error, errorMsg, loading } = useSelector(loginpageData);
+  const { user, error, loading } = useSelector(loginpageData);
 
   const [userLogin, setUserLogin] = useState<any>([]);
   const [passwordShow, setPasswordShow] = useState<boolean>(false);
-  const [loader, setLoader] = useState<boolean>(false);
 
   useEffect(() => {
     if (user && user) {
@@ -56,12 +54,11 @@ const Login = (props: any) => {
       password: userLogin.password || "",
     },
     validationSchema: Yup.object({
-      email: Yup.string().required("Please Enter Your Email"),
-      password: Yup.string().required("Please Enter Your Password"),
+      email: Yup.string().required("Tolong Masukan Email Anda"),
+      password: Yup.string().required("Tolong Masukan Password Anda"),
     }),
     onSubmit: (values) => {
       dispatch(loginUser(values, props.router.navigate));
-      setLoader(true);
     },
   });
 
@@ -109,7 +106,7 @@ const Login = (props: any) => {
                           <Input
                             name="email"
                             className="form-control"
-                            placeholder="Enter email"
+                            placeholder="Masukan email"
                             type="email"
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
@@ -122,7 +119,7 @@ const Login = (props: any) => {
                         <div className="mb-3">
                           <div className="float-end">
                             <Link to="/forgot-password" className="text-muted">
-                              Forgot password?
+                              Lupa password?
                             </Link>
                           </div>
                           <Label className="form-label" htmlFor="password-input">
@@ -134,7 +131,7 @@ const Login = (props: any) => {
                               value={validation.values.password || ""}
                               type={passwordShow ? "text" : "password"}
                               className="form-control pe-5"
-                              placeholder="Enter Password"
+                              placeholder="Masukan Password"
                               onChange={validation.handleChange}
                               onBlur={validation.handleBlur}
                               invalid={validation.touched.password && validation.errors.password ? true : false}

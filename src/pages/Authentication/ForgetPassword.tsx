@@ -41,7 +41,7 @@ const ForgetPasswordPage = (props: any) => {
       username: "",
     },
     validationSchema: Yup.object({
-      username: Yup.string().required("Please Enter Your Email"),
+      username: Yup.string().required("Tolong Masukan Email Anda"),
     }),
     onSubmit: (values) => {
       handleSendOtp(values);
@@ -117,10 +117,9 @@ const ForgetPasswordPage = (props: any) => {
               <div className="text-center mt-sm-5 mb-4 text-white-50">
                 <div>
                   <Link to="/" className="d-inline-block auth-logo">
-                    <img src={logoLight} alt="" height="20" />
+                    <img src={logoLight} alt="" height="50" />
                   </Link>
                 </div>
-                <p className="mt-3 fs-15 fw-medium">Premium Admin & Dashboard Template</p>
               </div>
             </Col>
           </Row>
@@ -137,7 +136,7 @@ const ForgetPasswordPage = (props: any) => {
                         </div>
                       </div>
                     </div>
-                    <h4 className="text-primary">Forgot Password?</h4>
+                    <h4 className="text-primary">Lupa Password?</h4>
                   </div>
 
                   <div className="text-center">
@@ -153,8 +152,8 @@ const ForgetPasswordPage = (props: any) => {
                     )}
 
                     <div className="text-muted text-center">
-                      {!hasSend.status && <p>Please enter your email</p>}
-                      {hasSend.status && <p>Please enter the 6 digit code sent to your email</p>}
+                      {!hasSend.status && <p>Tolong Masukan Email Anda</p>}
+                      {hasSend.status && <p>Tolong masukan 6 digit code yang telah dikirimkan ke email Anda.</p>}
                     </div>
                   </div>
 
@@ -171,7 +170,7 @@ const ForgetPasswordPage = (props: any) => {
                           <Input
                             name="username"
                             className="form-control"
-                            placeholder="Enter email"
+                            placeholder="Masukan email"
                             type="email"
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
@@ -187,7 +186,7 @@ const ForgetPasswordPage = (props: any) => {
 
                         <div className="text-center mt-4">
                           <button className="btn btn-success w-100" disabled={loading} type="submit">
-                            {loading ? <Spinner size="sm" className="me-2" /> : "Send OTP Code"}
+                            {loading ? <Spinner size="sm" className="me-2" /> : "Kirim Kode OTP"}
                           </button>
                         </div>
                       </Form>
@@ -301,7 +300,7 @@ const ForgetPasswordPage = (props: any) => {
                         <Input
                           name="password"
                           className="form-control"
-                          placeholder="Enter your new password"
+                          placeholder="Masukan password baru"
                           type="password"
                           value={formData.password}
                           onChange={handleChangePassword}
@@ -311,14 +310,14 @@ const ForgetPasswordPage = (props: any) => {
                         <Input
                           name="passwordConfirmation"
                           className="form-control"
-                          placeholder="Enter your confirmation password"
+                          placeholder="Masukan konfirmasi password"
                           type="password"
                           value={formData.passwordConfirmation}
                           onChange={handleChangePassword}
                         />
                       </div>
                       <div>
-                        <ButtonLoading title="Confirm" color="success" loading={loading} className="w-100" onClick={handleVerify} />
+                        <ButtonLoading title="Konfirmasi" color="success" loading={loading} className="w-100" onClick={handleVerify} />
                       </div>
                     </div>
                   )}
@@ -327,7 +326,7 @@ const ForgetPasswordPage = (props: any) => {
 
               <div className="mt-4 text-center">
                 <p className="mb-0">
-                  Wait, I remember my password...{" "}
+                  Tunggu, saya ingat password saya...{" "}
                   <Link to="/login" className="fw-semibold text-primary text-decoration-underline">
                     {" "}
                     Click here{" "}

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { setAuthorization } from "../helpers/api_helper";
 import { useDispatch } from "react-redux";
@@ -21,7 +21,7 @@ const AuthProtected = (props: any) => {
     } else if ((!userProfile && loading && !token) || isTokenExpired) {
       dispatch(logoutUser());
     }
-  }, [token, userProfile, loading, dispatch]);
+  }, [token, userProfile, loading, dispatch, isTokenExpired]);
 
   if (verify === USER_STATUS.NEW) {
     return <Navigate to={{ pathname: "/verify" }} />;

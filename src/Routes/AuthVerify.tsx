@@ -21,7 +21,7 @@ const AuthVerify = (props: any) => {
     } else if ((!userProfile && loading && !token) || isTokenExpired) {
       dispatch(logoutUser());
     }
-  }, [token, userProfile, loading, dispatch]);
+  }, [token, userProfile, loading, dispatch, isTokenExpired]);
 
   if (verify === USER_STATUS.ACTIVE) {
     return <Navigate to={{ pathname: "/dashboard" }} />;

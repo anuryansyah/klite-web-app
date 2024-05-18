@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 //import images
@@ -8,7 +8,7 @@ import logoLight from "../assets/images/logo-light.png";
 
 //import Components
 import FullScreenDropdown from "../Components/Common/FullScreenDropdown";
-import NotificationDropdown from "../Components/Common/NotificationDropdown";
+// import NotificationDropdown from "../Components/Common/NotificationDropdown";
 import ProfileDropdown from "../Components/Common/ProfileDropdown";
 import LightDark from "../Components/Common/LightDark";
 
@@ -26,10 +26,10 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }: any) => {
   // Inside your component
   const sidebarVisibilitytype = useSelector(selectDashboardData);
 
-  const [search, setSearch] = useState(false);
-  const toogleSearch = () => {
-    setSearch(!search);
-  };
+  // const [search, setSearch] = useState(false);
+  // const toogleSearch = () => {
+  //   setSearch(!search);
+  // };
 
   const toogleMenuBtn = () => {
     var windowSize = document.documentElement.clientWidth;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Col, Collapse, Row } from "reactstrap";
@@ -8,7 +8,7 @@ import withRouter from "../../Components/Common/withRouter";
 import navdata from "../LayoutMenuData";
 
 const HorizontalLayout = (props: any) => {
-  const [isMoreMenu, setIsMoreMenu] = useState(false);
+  // const [isMoreMenu, setIsMoreMenu] = useState(false);
   const navData = navdata().props.children;
   let menuItems: any = [];
   let splitMenuItems: Array<any> = [];
@@ -116,7 +116,7 @@ const HorizontalLayout = (props: any) => {
             {!item["isHeader"] ? (
               item.subItems ? (
                 <li className="nav-item">
-                  <Link onClick={item.click} className="nav-link menu-link me-4" to={item.link ? item.link : "/#"} data-bs-toggle="collapse">
+                  <Link onClick={item.click} className="nav-link menu-link" to={item.link ? item.link : "/#"} data-bs-toggle="collapse">
                     <i className={item.icon}></i> <span data-key="t-apps">{item.label}</span>
                   </Link>
                   <Collapse className={item.id === "baseUi" && item.subItems.length > 13 ? "menu-dropdown mega-dropdown-menu" : "menu-dropdown"} isOpen={item.stateVariables} id="sidebarApps">

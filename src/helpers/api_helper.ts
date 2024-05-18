@@ -84,8 +84,8 @@ class APIClient {
     return axios.patch(url, data);
   };
 
-  put = (url: string, data: any): Promise<AxiosResponse> => {
-    return axios.put(url, data);
+  put = (url: string, data: any, config?: AxiosRequestConfig): Promise<AxiosResponse> => {
+    return axios.put(url, data, config);
   };
 
   /**
