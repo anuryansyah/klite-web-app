@@ -4,7 +4,6 @@ import { Container, Row, Col, Card, CardBody, Label, Input, CardHeader, Nav, Nav
 import classnames from "classnames";
 
 import progileBg from "../../assets/images/auth-one-bg.jpg";
-import avatar from "../../assets/images/users/avatar-1.jpg";
 import { WEB_TITLE } from "Components/constants/general";
 import ButtonLoading from "Components/Common/ButtonLoading";
 import UserAPI from "helpers/api/user";
@@ -12,6 +11,7 @@ import UserAPI from "helpers/api/user";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import { ToastContainer, toast } from "react-toastify";
+import Avatar from "react-avatar";
 
 const UserProfile = () => {
   const [activeTab, setActiveTab] = useState("1");
@@ -113,8 +113,13 @@ const UserProfile = () => {
               <Card className="mt-n5">
                 <CardBody className="p-4">
                   <div className="text-center">
-                    <div className="profile-user position-relative d-inline-block mx-auto  mb-4">
-                      <img src={avatar} className="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile" />
+                    <div className="profile-user position-relative d-inline-block mx-auto mb-4">
+                      <Avatar
+                        round
+                        name={profile.fullname}
+                        size="100"
+                        style={{ fontFamily: 'inherit' }}
+                      />
                     </div>
                     <h5 className="fs-16 mb-1">{profile.fullname}</h5>
                     <p className="text-muted mb-0">{profile.role}</p>

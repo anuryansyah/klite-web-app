@@ -17,6 +17,9 @@ import UserProfile from "../pages/Authentication/user-profile";
 // User
 import UserPage from "../pages/User"
 
+// Daily Event
+import DailyEventPage from "../pages/DailyEvent"
+
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -26,6 +29,9 @@ const authProtectedRoutes = [
   
   // User
   { path: "/user", component: <UserPage /> },
+
+  // Daily Event
+  { path: "/daily-event", component: <DailyEventPage /> },
   
   // //Verify User
   // { path: "/verify", component: <Verify /> },
