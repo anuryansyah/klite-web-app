@@ -6,15 +6,14 @@ import BreadCrumb from "Components/Common/BreadCrumb";
 import Filter from "./Filter";
 import { timeFormat } from "utils/timeFormat";
 import ModalForm from "./ModalForm";
-import DailyEventAPI from "helpers/api/dailyEvent";
-import { getDayName } from "utils/dayFormat";
-import { MODALACTION } from "config/constant";
+import { EVENT_TYPE, MODALACTION } from "config/constant";
 import Swal from 'sweetalert2'
+import SpecialEventAPI from "helpers/api/specialEvent";
 
 const { CREATE, EDIT } = MODALACTION
 
-const DailyEvent = () => {
-  document.title = `Acara Harian | ${WEB_TITLE}`;
+const SpecialEvent = () => {
+  document.title = `Acara Spesial | ${WEB_TITLE}`;
 
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -74,7 +73,7 @@ const DailyEvent = () => {
       cancelButtonText: "Batal"
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await DailyEventAPI.delete({ id })
+        await SpecialEventAPI.delete({ id })
           .then((res: any) => {
             Swal.fire({ text: res.message, icon: "success" });
             setLoadingData(true);
@@ -89,7 +88,8 @@ const DailyEvent = () => {
 
   const [filter, setFilter] = useState({
     keywords: "",
-    day: ""
+    startDate: "",
+    endDate: "",
   });
 
   const [data, setData] = useState([]);
@@ -100,7 +100,7 @@ const DailyEvent = () => {
         limit: pageSize,
         ...filter,
       };
-      await DailyEventAPI.getList(params)
+      await SpecialEventAPI.getList(params)
         .then((res: any) => {
           setData(res.data);
           setTotalPage(res.totalPage);
@@ -127,18 +127,32 @@ const DailyEvent = () => {
         Header: "Judul Acara",
         accessor: "title",
       },
-      // {
-      //   Header: "Deskripsi",
-      //   accessor: "desc",
-      // },
+      {
+        Header: "Tipe",
+        accessor: (d: any) => {
+          switch (d.type) {
+            case EVENT_TYPE.PAID:
+              return <span className="badge bg-info p-2">Berbayar</span>;
+            case EVENT_TYPE.SEMI_BARTER:
+              return <span className="badge bg-success p-2">Semi Barter</span>;
+            case EVENT_TYPE.FULL_BARTER:
+              return <span className="badge bg-secondary p-2">Full Barter</span>;
+            default:
+              return '';
+          }
+        },
+      },
       {
         Header: "Penyiar",
         accessor: "announcer",
       },
       {
-        Header: "Hari",
+        Header: "Tanggal",
         accessor: (d: any) => {
-          return getDayName(d.day);
+          return timeFormat({
+            dateTime: d.date,
+            formatStr: 'dd MMM yyyy',
+          });
         },
       },
       {
@@ -209,7 +223,7 @@ const DailyEvent = () => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb title="Acara Harian" pageTitle="K-LITE" />
+          <BreadCrumb title="Acara Spesial" pageTitle="K-LITE" />
 
           <Row>
             <Col xs={12}>
@@ -324,4 +338,4 @@ const DailyEvent = () => {
   );
 };
 
-export default DailyEvent;
+export default SpecialEvent;

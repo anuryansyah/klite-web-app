@@ -20,6 +20,9 @@ import UserPage from "../pages/User"
 // Daily Event
 import DailyEventPage from "../pages/DailyEvent"
 
+// Special Event
+import SpecialEventPage from "../pages/SpecialEvent"
+
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -32,6 +35,9 @@ const authProtectedRoutes = [
 
   // Daily Event
   { path: "/daily-event", component: <DailyEventPage /> },
+
+  // Special Event
+  { path: "/special-event", component: <SpecialEventPage /> },
   
   // //Verify User
   // { path: "/verify", component: <Verify /> },

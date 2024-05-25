@@ -3,10 +3,11 @@ import { FC, useEffect, useState } from "react";
 import Select from "react-select";
 import Flatpickr from "react-flatpickr";
 import { Modal, ModalBody, ModalFooter, ModalHeader, Spinner } from "reactstrap";
-import DailyEventAPI from "helpers/api/dailyEvent";
-import { MODALACTION } from "config/constant";
-import { getDayName } from "utils/dayFormat";
+import { EVENT_TYPE, MODALACTION } from "config/constant";
 import Swal from "sweetalert2";
+import { Indonesian } from 'flatpickr/dist/l10n/id.js';
+import SpecialEventAPI from "helpers/api/specialEvent";
+import { getTypeName } from "utils/typeFormat";
 
 const { CREATE, EDIT } = MODALACTION
 
@@ -25,22 +26,19 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
   const [formData, setFormData] = useState({
     title: '',
     desc: '',
+    type: '',
     announcer: [],
-    day: '',
+    date: '',
     startHour: '00:00',
     endHour: '00:00',
   })
   const [selectedAnn, setSelectedAnn] = useState<any>([]);
-  const [selectedDay, setSelectedDay] = useState<any>([]);
+  const [selectedType, setSelectedType] = useState<any>([]);
 
-  const dayOpts = [
-    { value: '1', label: 'Senin' },
-    { value: '2', label: 'Selasa' },
-    { value: '3', label: 'Rabu' },
-    { value: '4', label: 'Kamis' },
-    { value: '5', label: 'Jumat' },
-    { value: '6', label: 'Sabtu' },
-    { value: '7', label: 'Minggu' },
+  const typeOpts = [
+    { value: EVENT_TYPE.PAID, label: 'Berbayar' },
+    { value: EVENT_TYPE.SEMI_BARTER, label: 'Semi Barter' },
+    { value: EVENT_TYPE.FULL_BARTER, label: 'Full Barter' },
   ];
 
   useEffect(() => {
@@ -50,7 +48,7 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
 
   useEffect(() => {
     const getDetail = async () => {
-      await DailyEventAPI.getDetail({ id: selectedData })
+      await SpecialEventAPI.getDetail({ id: selectedData })
         .then((res: any) => {
           const data: any = res.data;
           const temp: { value: string; label: string }[] = [];
@@ -67,15 +65,16 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
             ...prev, 
             title: data.title, 
             desc: data.desc,
+            type: data.type,
             announcer: data.announcer.map((item: any) => item.id),
-            day: data.day, 
+            date: data.date,
             startHour: data.startHour, 
             endHour: data.endHour, 
           }));
           setSelectedAnn(temp);
-          setSelectedDay({
-            value: data.day,
-            label: getDayName(data.day)
+          setSelectedType({
+            value: data.type,
+            label: getTypeName(data.type)
           });
 
           setLoadingDetail(false);
@@ -123,10 +122,14 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
     setSelectedAnn(data);
   } 
   
-  const handleSelectDay = (data:any) => {
-    setFormData((prev: any) => ({ ...prev, day: data.value }));
-    setSelectedDay(data)
+  const handleSelectType = (data:any) => {
+    setFormData((prev: any) => ({ ...prev, type: data.value }));
+    setSelectedType(data)
   }
+
+  const handleDateChange = (date: any, name: any) => {
+    setFormData((prev: any) => ({ ...prev, [name]: date }));
+  };
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -135,14 +138,15 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
     const payload = {
       title: formData.title,
       desc: formData.desc,
+      type: formData.type,
       announcer: formData.announcer,
-      day: formData.day,
+      date: formData.date,
       startHour: formData.startHour,
       endHour: formData.endHour,
     }
     
     if (action === CREATE) {
-      await DailyEventAPI.create(payload)
+      await SpecialEventAPI.create(payload)
         .then((res: any) => {
           Swal.fire({ text: res.message, icon: "success" });
           toggle();
@@ -152,7 +156,7 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
           Swal.fire({ text: err, icon: "error" });
         });
     } else if(action === EDIT) {
-      await DailyEventAPI.update({ id: selectedData }, payload)
+      await SpecialEventAPI.update({ id: selectedData }, payload)
         .then((res: any) => {
           Swal.fire({ text: res.message, icon: "success" });
           toggle();
@@ -195,6 +199,16 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
           </div>
           <div className="col-lg-12 mb-3">
             <label className="form-label">
+              Tipe Acara <span className="text-danger">*</span>
+            </label>
+            <Select 
+              value={selectedType}
+              options={typeOpts}
+              onChange={(selected:any) => handleSelectType(selected)}
+            />
+          </div>
+          <div className="col-lg-12 mb-3">
+            <label className="form-label">
               Penyiar <span className="text-danger">*</span>
             </label>
             <Select 
@@ -206,12 +220,17 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
           </div>
           <div className="col-lg-12 mb-3">
             <label className="form-label">
-              Hari <span className="text-danger">*</span>
+              Tanggal <span className="text-danger">*</span>
             </label>
-            <Select 
-              value={selectedDay}
-              options={dayOpts}
-              onChange={(selected:any) => handleSelectDay(selected)}
+            <Flatpickr
+              value={formData.date}
+              placeholder='Tanggal Akhir'
+              className="form-control"
+              options={{
+                dateFormat: "d M Y",
+                locale: Indonesian
+              }}
+              onChange={(date) => handleDateChange(date[0], 'date')}
             />
           </div>
           <div className="col-lg-12 mb-3">
