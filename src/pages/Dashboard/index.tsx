@@ -79,7 +79,7 @@ const Dashboard = () => {
             </Col>
             <Col md={6} className="text-end">
               <p className="mb-0">BOT Telegram</p>
-              <a href="https://t.me/KliteEventSchedule_bot" target="_blank">@KliteEventSchedule_bot</a>
+              <a href="https://t.me/kliteEvent_bot" target="_blank">@KliteEvent_bot</a>
             </Col>
           </Row>
 
