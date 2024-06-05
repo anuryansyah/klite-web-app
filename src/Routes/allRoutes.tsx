@@ -23,6 +23,9 @@ import DailyEventPage from "../pages/DailyEvent"
 // Special Event
 import SpecialEventPage from "../pages/SpecialEvent"
 
+// Shedule
+import ShcedulePage from "../pages/Schedule"
+
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -38,6 +41,9 @@ const authProtectedRoutes = [
 
   // Special Event
   { path: "/special-event", component: <SpecialEventPage /> },
+
+  // Schedule
+  { path: "/event-schedule", component: <ShcedulePage /> },
   
   // //Verify User
   // { path: "/verify", component: <Verify /> },

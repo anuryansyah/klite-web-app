@@ -3,22 +3,23 @@ import { FC, useEffect, useState } from "react";
 import Select from "react-select";
 import Flatpickr from "react-flatpickr";
 import { Modal, ModalBody, ModalFooter, ModalHeader, Spinner } from "reactstrap";
-import DailyEventAPI from "helpers/api/dailyEvent";
-import { MODALACTION } from "config/constant";
-import { getDayName } from "utils/dayFormat";
+import { EVENT_TYPE } from "config/constant";
 import Swal from "sweetalert2";
-
-const { CREATE, EDIT } = MODALACTION
+import { Indonesian } from 'flatpickr/dist/l10n/id.js';
+import SpecialEventAPI from "helpers/api/specialEvent";
+import { getTypeName } from "utils/typeFormat";
+import { format } from "date-fns";
+import ScheduleAPI from "helpers/api/schedule";
+import { timeFormat } from "utils/timeFormat";
 
 interface Props {
   selectedData: any;
-  action: any;
   toggle: any;
   isOpen: boolean;
   setLoadingData: any;
 }
 
-const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoadingData }) => {
+const ModalForm: FC<Props> = ({ selectedData, toggle, isOpen, setLoadingData }) => {
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [loadingDetail, setLoadingDetail] = useState(true);
@@ -26,22 +27,12 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
     title: '',
     desc: '',
     announcer: [],
-    day: '',
-    startHour: '',
-    endHour: '',
+    category: '',
+    date: '',
+    startHour: '00:00',
+    endHour: '00:00',
   })
   const [selectedAnn, setSelectedAnn] = useState<any>([]);
-  const [selectedDay, setSelectedDay] = useState<any>([]);
-
-  const dayOpts = [
-    { value: '1', label: 'Senin' },
-    { value: '2', label: 'Selasa' },
-    { value: '3', label: 'Rabu' },
-    { value: '4', label: 'Kamis' },
-    { value: '5', label: 'Jumat' },
-    { value: '6', label: 'Sabtu' },
-    { value: '7', label: 'Minggu' },
-  ];
 
   useEffect(() => {
     const allFieldsFilled = Object.values(formData).every(field => field !== '');
@@ -50,7 +41,7 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
 
   useEffect(() => {
     const getDetail = async () => {
-      await DailyEventAPI.getDetail({ id: selectedData })
+      await ScheduleAPI.getDetail({ id: selectedData })
         .then((res: any) => {
           const data: any = res.data;
           const temp: { value: string; label: string }[] = [];
@@ -67,26 +58,20 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
             ...prev, 
             title: data.title, 
             desc: data.desc,
+            category: data.category,
             announcer: data.announcer.map((item: any) => item.id),
-            day: data.day, 
+            date: data.date,
             startHour: data.startHour, 
             endHour: data.endHour, 
           }));
           setSelectedAnn(temp);
-          setSelectedDay({
-            value: data.day,
-            label: getDayName(data.day)
-          });
-
           setLoadingDetail(false);
         })
         .catch((err) => console.log(err));
     };
 
-    if (action === EDIT && selectedData) {
+    if (selectedData) {
       getDetail();
-    } else {
-      setLoadingDetail(false);
     }
   }, [selectedData]);
 
@@ -122,52 +107,33 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
     setFormData((prev: any) => ({ ...prev, announcer: selectedValues }));
     setSelectedAnn(data);
   } 
-  
-  const handleSelectDay = (data:any) => {
-    setFormData((prev: any) => ({ ...prev, day: data.value }));
-    setSelectedDay(data)
-  }
 
   const handleSubmit = async () => {
     setLoading(true);
     setDisabled(true);
 
     const payload = {
-      title: formData.title,
       desc: formData.desc,
       announcer: formData.announcer,
-      day: formData.day,
       startHour: formData.startHour,
       endHour: formData.endHour,
     }
     
-    if (action === CREATE) {
-      await DailyEventAPI.create(payload)
-        .then((res: any) => {
-          Swal.fire({ text: res.message, icon: "success" });
-          toggle();
-          setLoadingData(true);
-        })
-        .catch((err) => {
-          Swal.fire({ text: err, icon: "error" });
-        });
-    } else if(action === EDIT) {
-      await DailyEventAPI.update({ id: selectedData }, payload)
-        .then((res: any) => {
-          Swal.fire({ text: res.message, icon: "success" });
-          toggle();
-          setLoadingData(true);
-        })
-        .catch((err) => {
-          Swal.fire({ text: err, icon: "error" });
-        });
-    }
+    await ScheduleAPI.update({ id: selectedData }, payload)
+      .then((res: any) => {
+        Swal.fire({ text: res.message, icon: "success" });
+        toggle();
+        setLoadingData(true);
+      })
+      .catch((err) => {
+        Swal.fire({ text: err, icon: "error" });
+      });
     
   }
 
   return (
     <Modal isOpen={isOpen} toggle={() => toggle()} size="md">
-      <ModalHeader toggle={() => toggle()}>{action === CREATE ? 'Tambah Acara' : 'Detail Acara'}</ModalHeader>
+      <ModalHeader toggle={() => toggle()}>Detail Acara</ModalHeader>
       <ModalBody>
         <div className="row">
           <div className="col-lg-12 mb-3">
@@ -180,6 +146,7 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
               className="form-control"
               value={formData.title}
               onChange={handleChange}
+              disabled
             />
           </div>
           <div className="col-lg-12 mb-3">
@@ -195,6 +162,19 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
           </div>
           <div className="col-lg-12 mb-3">
             <label className="form-label">
+              Tipe Acara <span className="text-danger">*</span>
+            </label>
+            <input
+              name="category"
+              type="text"
+              className="form-control"
+              value={formData.category}
+              onChange={handleChange}
+              disabled
+            />
+          </div>
+          <div className="col-lg-12 mb-3">
+            <label className="form-label">
               Penyiar <span className="text-danger">*</span>
             </label>
             <Select 
@@ -206,12 +186,18 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
           </div>
           <div className="col-lg-12 mb-3">
             <label className="form-label">
-              Hari <span className="text-danger">*</span>
+              Tanggal <span className="text-danger">*</span>
             </label>
-            <Select 
-              value={selectedDay}
-              options={dayOpts}
-              onChange={(selected:any) => handleSelectDay(selected)}
+            <input
+              name="title"
+              type="text"
+              className="form-control"
+              value={timeFormat({
+                dateTime: formData.date,
+                formatStr: 'dd MMM yyyy',
+              })}
+              onChange={handleChange}
+              disabled
             />
           </div>
           <div className="col-lg-12 mb-3">

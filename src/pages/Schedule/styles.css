@@ -1,0 +1,30 @@
+.date-picker-wrapper .flatpickr-input {
+  display: none;
+}
+
+.date-picker-wrapper .flatpickr-days {
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.date-picker-wrapper .flatpickr-months {
+  /* border-radius: 0 !important; */
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.date-picker-wrapper .flatpickr-current-month {
+  margin-top: 5.7px;
+}
+
+.date-picker-wrapper .flatpickr-months .flatpickr-prev-month, .date-picker-wrapper .flatpickr-months .flatpickr-next-month {
+  position: inherit;
+}
+
+.date-picker-wrapper .flatpickr-current-month .numInputWrapper {
+  margin-left: 6px;
+}
+
+.date-picker-wrapper .flatpickr-months .numInput, .date-picker-wrapper .flatpickr-months .flatpickr-monthDropdown-months {
+  font-weight: normal !important;
+}

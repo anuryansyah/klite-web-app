@@ -6,7 +6,7 @@ import BreadCrumb from "Components/Common/BreadCrumb";
 import Filter from "./Filter";
 import { timeFormat } from "utils/timeFormat";
 import ModalForm from "./ModalForm";
-import { EVENT_TYPE, MODALACTION } from "config/constant";
+import { MODALACTION } from "config/constant";
 import Swal from 'sweetalert2'
 import SpecialEventAPI from "helpers/api/specialEvent";
 
@@ -126,21 +126,6 @@ const SpecialEvent = () => {
       {
         Header: "Judul Acara",
         accessor: "title",
-      },
-      {
-        Header: "Tipe",
-        accessor: (d: any) => {
-          switch (d.type) {
-            case EVENT_TYPE.PAID:
-              return <span className="badge bg-info p-2">Berbayar</span>;
-            case EVENT_TYPE.SEMI_BARTER:
-              return <span className="badge bg-success p-2">Semi Barter</span>;
-            case EVENT_TYPE.FULL_BARTER:
-              return <span className="badge bg-secondary p-2">Full Barter</span>;
-            default:
-              return '';
-          }
-        },
       },
       {
         Header: "Penyiar",

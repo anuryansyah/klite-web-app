@@ -7,7 +7,7 @@ import { EVENT_TYPE, MODALACTION } from "config/constant";
 import Swal from "sweetalert2";
 import { Indonesian } from 'flatpickr/dist/l10n/id.js';
 import SpecialEventAPI from "helpers/api/specialEvent";
-import { getTypeName } from "utils/typeFormat";
+import { format } from "date-fns";
 
 const { CREATE, EDIT } = MODALACTION
 
@@ -26,20 +26,12 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
   const [formData, setFormData] = useState({
     title: '',
     desc: '',
-    type: '',
     announcer: [],
     date: '',
-    startHour: '00:00',
-    endHour: '00:00',
+    startHour: '',
+    endHour: '',
   })
   const [selectedAnn, setSelectedAnn] = useState<any>([]);
-  const [selectedType, setSelectedType] = useState<any>([]);
-
-  const typeOpts = [
-    { value: EVENT_TYPE.PAID, label: 'Berbayar' },
-    { value: EVENT_TYPE.SEMI_BARTER, label: 'Semi Barter' },
-    { value: EVENT_TYPE.FULL_BARTER, label: 'Full Barter' },
-  ];
 
   useEffect(() => {
     const allFieldsFilled = Object.values(formData).every(field => field !== '');
@@ -72,10 +64,6 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
             endHour: data.endHour, 
           }));
           setSelectedAnn(temp);
-          setSelectedType({
-            value: data.type,
-            label: getTypeName(data.type)
-          });
 
           setLoadingDetail(false);
         })
@@ -120,12 +108,10 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
     const selectedValues = data.map((item: any) => item.value)
     setFormData((prev: any) => ({ ...prev, announcer: selectedValues }));
     setSelectedAnn(data);
-  } 
-  
-  const handleSelectType = (data:any) => {
-    setFormData((prev: any) => ({ ...prev, type: data.value }));
-    setSelectedType(data)
   }
+
+  console.log();
+  
 
   const handleDateChange = (date: any, name: any) => {
     setFormData((prev: any) => ({ ...prev, [name]: date }));
@@ -138,9 +124,8 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
     const payload = {
       title: formData.title,
       desc: formData.desc,
-      type: formData.type,
       announcer: formData.announcer,
-      date: formData.date,
+      date: format(formData.date, 'yyyy-MM-dd') ,
       startHour: formData.startHour,
       endHour: formData.endHour,
     }
@@ -199,16 +184,6 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
           </div>
           <div className="col-lg-12 mb-3">
             <label className="form-label">
-              Tipe Acara <span className="text-danger">*</span>
-            </label>
-            <Select 
-              value={selectedType}
-              options={typeOpts}
-              onChange={(selected:any) => handleSelectType(selected)}
-            />
-          </div>
-          <div className="col-lg-12 mb-3">
-            <label className="form-label">
               Penyiar <span className="text-danger">*</span>
             </label>
             <Select 
@@ -224,7 +199,7 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
             </label>
             <Flatpickr
               value={formData.date}
-              placeholder='Tanggal Akhir'
+              placeholder='Tanggal Acara'
               className="form-control"
               options={{
                 dateFormat: "d M Y",
