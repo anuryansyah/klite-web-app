@@ -3,12 +3,7 @@ import { FC, useEffect, useState } from "react";
 import Select from "react-select";
 import Flatpickr from "react-flatpickr";
 import { Modal, ModalBody, ModalFooter, ModalHeader, Spinner } from "reactstrap";
-import { EVENT_TYPE } from "config/constant";
 import Swal from "sweetalert2";
-import { Indonesian } from 'flatpickr/dist/l10n/id.js';
-import SpecialEventAPI from "helpers/api/specialEvent";
-import { getTypeName } from "utils/typeFormat";
-import { format } from "date-fns";
 import ScheduleAPI from "helpers/api/schedule";
 import { timeFormat } from "utils/timeFormat";
 
@@ -101,6 +96,12 @@ const ModalForm: FC<Props> = ({ selectedData, toggle, isOpen, setLoadingData }) 
     
     setFormData((prev: any) => ({ ...prev, [name]: value }));
   };
+
+  const [conflictHour, setConflictHour] = useState('')
+  const handleChangeHour = (time: any) => {
+    setFormData((prev: any) => ({ ...prev, endHour: time }));
+    time <= formData.startHour ? setConflictHour('Jam Selesai tidak bisa lebih awal dari Jam Mulai.') : setConflictHour('');
+  }
   
   const handleSelectAnnouncer = (data:any) => {
     const selectedValues = data.map((item: any) => item.value)
@@ -127,6 +128,7 @@ const ModalForm: FC<Props> = ({ selectedData, toggle, isOpen, setLoadingData }) 
       })
       .catch((err) => {
         Swal.fire({ text: err, icon: "error" });
+        toggle();
       });
     
   }
@@ -235,12 +237,15 @@ const ModalForm: FC<Props> = ({ selectedData, toggle, isOpen, setLoadingData }) 
                 noCalendar: true,
                 time_24hr: true
               }}
-              onChange={(date, time) => {
-                setFormData((prev: any) => ({ ...prev, endHour: time }));
-              }}
+              onChange={(date, time) => handleChangeHour(time)}
             />
           </div>
         </div>
+        {conflictHour && (
+          <div className="alert alert-danger text-center" role="alert">
+            {conflictHour}
+          </div>
+        )}
       </ModalBody>
       <ModalFooter>
         {loadingDetail && (

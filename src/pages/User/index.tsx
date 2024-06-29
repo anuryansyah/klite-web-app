@@ -7,6 +7,7 @@ import UserAPI from "helpers/api/user";
 import Filter from "./Filter";
 import { timeFormat } from "utils/timeFormat";
 import ModalForm from "./ModalForm";
+import Swal from "sweetalert2";
 
 const User = () => {
   document.title = `User | ${WEB_TITLE}`;
@@ -76,6 +77,31 @@ const User = () => {
     }
   }, [loadingData]);
 
+  const toggleDelete = (id: string) => {
+    Swal.fire({
+      text: "Yakin ingin menghapus data ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, Hapus!",
+      cancelButtonText: "Batal"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const params = { id }
+        await UserAPI.delete(params)
+          .then((res: any) => {
+            Swal.fire({ text: res.message, icon: "success" });
+            setLoadingData(true);
+          })
+          .catch((err: any) => {
+            console.log(err);
+            Swal.fire({ text: err, icon: "error" });
+          });
+      }
+    });
+  }
+
   const columns = React.useMemo(
     () => [
       {
@@ -124,6 +150,21 @@ const User = () => {
             dateTime: d.createDate,
             formatStr: 'dd MMM yyyy',
           });
+        },
+      },
+      {
+        Header: "Aksi",
+        accessor: (d: any) => {
+          return (
+            <div className="d-flex gap-1">
+              <button
+                onClick={() => toggleDelete(d.id)}
+                className="btn btn-sm btn-soft-danger"
+              >
+                Hapus
+              </button>
+            </div>
+          );
         },
       },
     ],

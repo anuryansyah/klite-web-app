@@ -116,6 +116,12 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
     
     setFormData((prev: any) => ({ ...prev, [name]: value }));
   };
+
+  const [conflictHour, setConflictHour] = useState('')
+  const handleChangeHour = (time: any) => {
+    setFormData((prev: any) => ({ ...prev, endHour: time }));
+    time <= formData.startHour ? setConflictHour('Jam Selesai tidak bisa lebih awal dari Jam Mulai.') : setConflictHour('');
+  }
   
   const handleSelectAnnouncer = (data:any) => {
     const selectedValues = data.map((item: any) => item.value)
@@ -162,6 +168,9 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
           Swal.fire({ text: err, icon: "error" });
         });
     }
+
+    setLoading(false);
+    setDisabled(false);
     
   }
 
@@ -249,12 +258,15 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
                 noCalendar: true,
                 time_24hr: true
               }}
-              onChange={(date, time) => {
-                setFormData((prev: any) => ({ ...prev, endHour: time }));
-              }}
+              onChange={(date, time) => {handleChangeHour(time)}}
             />
           </div>
         </div>
+        {conflictHour && (
+          <div className="alert alert-danger text-center" role="alert">
+            {conflictHour}
+          </div>
+        )}
       </ModalBody>
       <ModalFooter>
         {loadingDetail && (

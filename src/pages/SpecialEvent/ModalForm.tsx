@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from "react";
 import Select from "react-select";
 import Flatpickr from "react-flatpickr";
 import { Modal, ModalBody, ModalFooter, ModalHeader, Spinner } from "reactstrap";
-import { EVENT_TYPE, MODALACTION } from "config/constant";
+import { MODALACTION } from "config/constant";
 import Swal from "sweetalert2";
 import { Indonesian } from 'flatpickr/dist/l10n/id.js';
 import SpecialEventAPI from "helpers/api/specialEvent";
@@ -103,15 +103,18 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
     
     setFormData((prev: any) => ({ ...prev, [name]: value }));
   };
+
+  const [conflictHour, setConflictHour] = useState('')
+  const handleChangeHour = (time: any) => {
+    setFormData((prev: any) => ({ ...prev, endHour: time }));
+    time <= formData.startHour ? setConflictHour('Jam Selesai tidak bisa lebih awal dari Jam Mulai.') : setConflictHour('');
+  }
   
   const handleSelectAnnouncer = (data:any) => {
     const selectedValues = data.map((item: any) => item.value)
     setFormData((prev: any) => ({ ...prev, announcer: selectedValues }));
     setSelectedAnn(data);
   }
-
-  console.log();
-  
 
   const handleDateChange = (date: any, name: any) => {
     setFormData((prev: any) => ({ ...prev, [name]: date }));
@@ -151,7 +154,9 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
           Swal.fire({ text: err, icon: "error" });
         });
     }
-    
+
+    setLoading(false);
+    setDisabled(false);
   }
 
   return (
@@ -243,12 +248,15 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
                 noCalendar: true,
                 time_24hr: true
               }}
-              onChange={(date, time) => {
-                setFormData((prev: any) => ({ ...prev, endHour: time }));
-              }}
+              onChange={(date, time) => handleChangeHour(time)}
             />
           </div>
         </div>
+        {conflictHour && (
+          <div className="alert alert-danger text-center" role="alert">
+            {conflictHour}
+          </div>
+        )}
       </ModalBody>
       <ModalFooter>
         {loadingDetail && (
@@ -268,7 +276,7 @@ const ModalForm: FC<Props> = ({ selectedData, action, toggle, isOpen, setLoading
         </button>
         <button
           className="btn btn-primary btn-sm"
-          disabled={disabled}
+          disabled={disabled || conflictHour !== ''}
           onClick={handleSubmit}
         >
           {loading ? <Spinner size="sm" /> : 'Simpan'}

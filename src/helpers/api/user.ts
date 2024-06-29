@@ -12,6 +12,7 @@ const UserAPI = {
   create: (data?: any) => api.post('user/create', data),
   update: (data?: any) => api.put(url.PUT_EDIT_PROFILE, data),
   updatePassword: (payload: any, params: any) => api.put(`user/change-password`, payload, { params }),
+  delete: (params: any) => api.delete(`user/delete`, { params }),
 }
 
 export default UserAPI;

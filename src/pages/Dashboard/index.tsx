@@ -42,7 +42,7 @@ const Dashboard = () => {
       const params = {
         date: format(date, "yyyy-MM-dd"),
       };
-      await ScheduleAPI.getList(params)
+      await ScheduleAPI.getListByUser(params)
         .then((res: any) => {
           setEventData(res.data);
         })
@@ -52,8 +52,6 @@ const Dashboard = () => {
     };
     getData();
   }, [date]);
-
-  console.log(eventData);
 
   const getType = (type: string) => {
     switch (type) {
@@ -79,7 +77,7 @@ const Dashboard = () => {
             </Col>
             <Col md={6} className="text-end">
               <p className="mb-0">BOT Telegram</p>
-              <a href="https://t.me/kliteEvent_bot" target="_blank">@KliteEvent_bot</a>
+              <a href="https://t.me/kliteEvent_bot" target="_blank" rel="noreferrer">@KliteEvent_bot</a>
             </Col>
           </Row>
 

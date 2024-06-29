@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardBody, CardFooter, CardHeader, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Row, Spinner, UncontrolledDropdown } from "reactstrap";
+import { Card, CardBody, CardFooter, Col, Container, Row, Spinner, } from "reactstrap";
 import { WEB_TITLE } from "Components/constants/general";
 import BreadCrumb from "Components/Common/BreadCrumb";
 import Flatpickr from "react-flatpickr";
@@ -253,6 +253,10 @@ const DailyEvent = () => {
                                     <span className="badge bg-secondary-subtle text-secondary p-2 mb-3">{item.category}</span>
                                   )}
                                 </div>
+                                <div className="flex-shrink-0">
+                                  {item.conflict && <span className="badge bg-danger text-white p-2 mb-3">{item.conflict}</span>}
+                                </div>
+
                               </div>
                               <div className="d-flex mb-2">
                                 <div className="flex-grow-1">
